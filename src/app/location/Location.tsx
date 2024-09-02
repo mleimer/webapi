@@ -26,7 +26,7 @@ export default function Location() {
     return (
         <div>
             <div>Your location is</div>
-            <div>{JSON.stringify(coordinates, null, 2)}</div>
+            <div>{JSON.stringify(coordinates[coordinates.length - 1], null, 2)}</div>
             {error ?
                 (<div>
                     <div>There has been an error</div>
