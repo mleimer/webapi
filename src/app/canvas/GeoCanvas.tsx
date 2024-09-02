@@ -12,7 +12,7 @@ const GeoCanvas = ({ coordinates }: {coordinates: GeolocationCoordinates[]}) => 
     const geoToCanvas = (lat: number, lon: number, width: number, height: number) => {
         // Assuming an equirectangular projection
         const x = width * ((lon - minLon) / (maxLon - minLon))
-        const y = height * ((lat - minLat) / (maxLat - minLat))
+        const y = height - height * ((lat - minLat) / (maxLat - minLat))
 /*        const x = (lon + 180) * (width / 360);
         const y = (90 - lat) * (height / 180);*/
         return { x, y };
