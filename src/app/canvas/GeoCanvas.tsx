@@ -1,14 +1,20 @@
 // components/GeoCanvas.js
-import { useEffect, useRef } from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 const GeoCanvas = ({ coordinates }: {coordinates: GeolocationCoordinates[]}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const minLon = coordinates.reduce((red, cur) => Math.min(red, cur.longitude), 180);
+    const maxLon = coordinates.reduce((red, cur) => Math.max(red, cur.longitude), -180);
+    const minLat = coordinates.reduce((red, cur) => Math.min(red, cur.latitude), 90);
+    const maxLat = coordinates.reduce((red, cur) => Math.max(red, cur.latitude), -90);
 
     // Helper function to convert latitude/longitude to canvas coordinates
     const geoToCanvas = (lat: number, lon: number, width: number, height: number) => {
         // Assuming an equirectangular projection
-        const x = (lon + 180) * (width / 360);
-        const y = (90 - lat) * (height / 180);
+        const x = width * ((lon - minLon) / (maxLon - minLon))
+        const y = height * ((lat - minLat) / (maxLat - minLat))
+/*        const x = (lon + 180) * (width / 360);
+        const y = (90 - lat) * (height / 180);*/
         return { x, y };
     };
 
