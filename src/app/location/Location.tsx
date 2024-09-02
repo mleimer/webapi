@@ -1,15 +1,16 @@
 "use client";
 
 import {useEffect, useState} from "react";
+import GeoCanvas from "@/app/canvas/GeoCanvas";
 
 export default function Location() {
 
-    let [coordinates, setCoordinates] = useState<GeolocationCoordinates>();
+    let [coordinates, setCoordinates] = useState<GeolocationCoordinates[]>([]);
     let [error, setError] = useState<GeolocationPositionError>();
     useEffect(() => {
         if ('geolocation' in navigator) {
             const watchId = navigator.geolocation.watchPosition(({coords}) => {
-                    setCoordinates(coords);
+                    setCoordinates(prevCoordinates => [...prevCoordinates, coords]);
                 }, (err) => setError(err), {
                     enableHighAccuracy: true,
                     maximumAge: 0,
@@ -32,6 +33,7 @@ export default function Location() {
                     <div>{JSON.stringify(error, null, 2)}</div>
                 </div>) : null
             }
+            <GeoCanvas coordinates={coordinates}/>
         </div>
     );
 }
